@@ -49,6 +49,7 @@ docker ps
 docker images
 docker rm -f $(docker ps -a -q)
 docker rmi $(docker images -q)
+docker images
 docker pull thekingmarco/todoimage:v1.0
 docker images
 docker logout 
@@ -61,6 +62,7 @@ docker run --name todo -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc
 http://localhost:3000 
 #aggiungi elementi alla lista
 docker rm -f todo
+#refresh the page
 docker ps
 docker run --name todo -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc/todos thekingmarco/todoimage:v1.0
 http://localhost:3000 #vedremo gli stessi elementi di prima
@@ -82,7 +84,7 @@ docker run -d \
      -e MYSQL_DATABASE=todos \
      mysql:8.0
 
-docker exec -it mysql net-mysql -u root -p toor #connect to container
+docker exec -it mysql mysql -u root -p #connect to container
 ```
 adesso che siamo dentro al conteiner lanciamo i seguwnti comandi per verificare la creazione del nostro db
 ```shell
@@ -93,6 +95,7 @@ possiamo verificare il raggiungimento del db sulla rete attraverso un container 
 ```shell
 docker run --name trouble -it --network net-todo-app nicolaka/netshoot
     dig net-mysql #useful DNS tool , cerchiamo attraverso l'alias che abbiamo ipostato nel container
+    exit
 docker rm -f trouble
 ```
 ## Run your app with MySQL
@@ -103,15 +106,16 @@ MYSQL_USER - the username to use for the connection
 MYSQL_PASSWORD - the password to use for the connection
 MYSQL_DB - the database to use once connected
 ```shell
-docker exec -it mysql net-mysql -u root -p toor #entra in mysql
+docker exec -it mysql mysql -u root -p todos #entra in mysql
     ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'secret';
     flush privileges;
+    exit
 ```
 start the container app
 ```shell
 #-w si sposta nella work directory /app
  docker run -dp 3000:3000 \
-   --name todo-app
+   --name todo-app \
    -w /app \
    --network net-todo-app \
    -e MYSQL_HOST=mysql \
