@@ -2,6 +2,10 @@
 
 ```shell
 sudo apt-get remove docker docker-engine docker.io containerd runc
+sudo apt-get purge docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-ce-rootless-extras
+#delete all images, volume and containers
+sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
 ```
 
 # Installazione Docker Engine on Ubuntu
@@ -31,6 +35,7 @@ echo \
 ```
 # Uninstall Docker Engine
 ```shell
+sudo apt-get remove docker docker-engine docker.io containerd runc
 sudo apt-get purge docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-ce-rootless-extras
 #delete all images, volume and containers
 sudo rm -rf /var/lib/docker
