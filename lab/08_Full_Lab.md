@@ -62,11 +62,66 @@ docker rm -f todo
 docker ps
 docker run --name todo -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc/todos thekingmarco/ToDoImage:v1.0
 http://localhost:3000 #vedremo gli stessi elementi di prima
+docker rm -f todo
 ```
 
 # Multi container apps
+now we create a mysql container in the same network of the our app , so they can comunicate and we can store the date of the our app in a mysql DB
 ```shell
+docker network create net-todo-app #create a network
+```
+start mysql database with in the network with some enviroment variables, and create also a new volume that point to the folder where mysql store its data
+```shell
+docker run -d \
+     --network net-todo-app --network-alias net-mysql \
+     --name mysql \
+     -v todo-mysql-data:/var/lib/mysql \
+     -e MYSQL_ROOT_PASSWORD=toor \
+     -e MYSQL_DATABASE=todos \
+     mysql:8.0
 
+docker exec -it mysql net-mysql -u root -p toor #connect to container
+```
+adesso che siamo dentro al conteiner lanciamo i seguwnti comandi per verificare la creazione del nostro db
+```shell
+SHOW DATABASES; 
+exit
+```
+possiamo verificare il raggiungimento del db sulla rete attraverso un container specifico per troobleshoting di network
+```shell
+docker run --name trouble -it --network net-todo-app nicolaka/netshoot
+    dig net-mysql #useful DNS tool , cerchiamo attraverso l'alias che abbiamo ipostato nel container
+docker rm -f trouble
+```
+## Run your app with MySQL
+The todo app supports the setting of a few environment variables to specify MySQL connection settings. They are:
+
+MYSQL_HOST - the hostname for the running MySQL server
+MYSQL_USER - the username to use for the connection
+MYSQL_PASSWORD - the password to use for the connection
+MYSQL_DB - the database to use once connected
+```shell
+docker exec -it mysql net-mysql -u root -p toor #entra in mysql
+    ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'secret';
+    flush privileges;
+```
+start the container app
+```shell
+#-w si sposta nella work directory /app
+ docker run -dp 3000:3000 \
+   --name todo-app
+   -w /app \
+   --network net-todo-app \
+   -e MYSQL_HOST=mysql \
+   -e MYSQL_USER=root \
+   -e MYSQL_PASSWORD=secret \
+   -e MYSQL_DB=todos \
+   thekingmarco/ToDoImage:v1.0 \
+
+docker logs -f todo-app
+http://localhost:3000 #add few items
+docker exec -it mysql net-mysql -u root -p toor #entra nel db
+    select * from todo_items #verifica i nuovi items
 ```
 
 
