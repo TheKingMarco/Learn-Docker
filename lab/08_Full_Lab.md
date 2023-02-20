@@ -41,15 +41,15 @@ docker run --name todo -dp 3000:3000 myimage:v2 #see the new update
 ```
 # Share the application
 ```shell
-docker tag myimage:v2 thekingmarco/ToDoImage:v1.0 #tagga imagine locale con docker account name
+docker tag myimage:v2 thekingmarco/todoimage:v1.0 #tagga imagine locale con docker account name
 docker images
 docker login #accedi al tuo account docker hub username e password
-docker push thekingmarco/ToDoImage:v1.0 #push dell'imagine locale su docker hub repository
+docker push thekingmarco/todoimage:v1.0 #push dell'imagine locale su docker hub repository
 docker ps
 docker images
 docker rm -f $(docker ps -a -q)
 docker rmi $(docker images -q)
-docker pull thekingmarco/ToDoImage:v1.0
+docker pull thekingmarco/todoimage:v1.0
 docker images
 docker logout 
 ```
@@ -57,12 +57,12 @@ docker logout
 By default, the todo app stores its data in a SQLite database at /etc/todos/todo.db
 ```shell
 docker volume create todo-db
-docker run --name todo -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc/todos thekingmarco/ToDoImage:v1.0
+docker run --name todo -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc/todos thekingmarco/todoimage:v1.0
 http://localhost:3000 
 #aggiungi elementi alla lista
 docker rm -f todo
 docker ps
-docker run --name todo -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc/todos thekingmarco/ToDoImage:v1.0
+docker run --name todo -dp 3000:3000 --mount type=volume,src=todo-db,target=/etc/todos thekingmarco/todoimage:v1.0
 http://localhost:3000 #vedremo gli stessi elementi di prima
 docker rm -f todo
 ```
@@ -118,7 +118,7 @@ start the container app
    -e MYSQL_USER=root \
    -e MYSQL_PASSWORD=secret \
    -e MYSQL_DB=todos \
-   thekingmarco/ToDoImage:v1.0 \
+   thekingmarco/todoimage:v1.0 \
 
 docker logs -f todo-app
 http://localhost:3000 #add few items
