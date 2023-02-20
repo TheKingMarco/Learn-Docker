@@ -6,6 +6,7 @@ git clone https://github.com/docker/getting-started.git
 ## Build the app’s container image
 ```shell
 cd getting-started/app
+ls
 vi Dockerfile
 ```
 insert this:
@@ -21,11 +22,12 @@ EXPOSE 3000
 ```
 Build the Image
 ```shell
-docker build -t myImage:v1 .
+docker build -t myimage:v1 .
 ```
 ## Start an app container
 ```shell
-docker run --name todo -dp 3000:3000 myImage:v1
+docker run --name todo -dp 3000:3000 myimage:v1
+curl http://localhost:3000
 http://localhost:3000
 #add some items
 docker rm -f todo
@@ -34,12 +36,12 @@ docker rm -f todo
 ```shell
 #edit in line 56
 vi src/static/js/app.js
-docker build -t myImage:v2 .
-docker run --name todo -dp 3000:3000 myImage:v2 #see the new update
+docker build -t myimage:v2 .
+docker run --name todo -dp 3000:3000 myimage:v2 #see the new update
 ```
 # Share the application
 ```shell
-docker tag myImage:v2 thekingmarco/ToDoImage:v1.0 #tagga imagine locale con docker account name
+docker tag myimage:v2 thekingmarco/ToDoImage:v1.0 #tagga imagine locale con docker account name
 docker images
 docker login #accedi al tuo account docker hub username e password
 docker push thekingmarco/ToDoImage:v1.0 #push dell'imagine locale su docker hub repository

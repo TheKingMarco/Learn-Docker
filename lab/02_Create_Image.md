@@ -5,11 +5,10 @@ docker run --name test -ti ubuntu bash
     apt-get install -y figlet #stampa in ASCII la stringa che gli passi
     figlet "hello docker"
     exit
-docker container ls -a #get id container
 docker container diff test# #mostra le differenze tra l'imagine iniziale e ciò che è stato modificato nel container
 docker commit test #crea un immagine localmente dal container ce gli passiamo
 docker images #vedi la nuova immagine e get image id
-dokcer image tag <image-id> myfiglet #rinomina l'immagine e o assegna un tag all'immagine
+docker image tag <image-id> myfiglet #rinomina l'immagine e o assegna un tag all'immagine
 docker images
 docker run myfiglet figlet hello #lanciamo un container con la nostra nuova immagine
 ```
@@ -25,5 +24,5 @@ docker logout
 ```shell
 docker rm -f $(docker ps -a -q)
 docker volume rm $(docker volume ls -q)
-docker rmi $(docker images -q)
+docker rmi -f $(docker images -q)
 ```

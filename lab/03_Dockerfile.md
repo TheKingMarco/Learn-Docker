@@ -30,8 +30,10 @@ vi Dockerfile
 ```
 crea Dockerfile
 ```shell
-FROM nginx   #start with a nginx images  
-COPY static-html-directory /usr/share/nginx/html #copy or dir in container dir
+#start with a nginx images  
+FROM nginx
+#copy or dir in container dir
+COPY static-html-directory /usr/share/nginx/html 
 ```
 Build
 ```shell
@@ -109,9 +111,6 @@ vi package.json
   "description": "A simple 'Hello, World!' Node.js application",
   "scripts": {
     "start": "node index.js"
-  },
-  "dependencies": {
-    "http": "^0.0.1"
   }
 }
 ```
@@ -126,7 +125,10 @@ This command builds a Docker image named my-app using the Dockerfile in the curr
 
 Run the Docker container:
 ```shell
-docker run -p 3000:3000 my-app
+docker run -d -p 3000:3000 my-app:v1
+curl http://localhost:3000
+docker images
+docker ps
 ```
 # Remove all
 ```shell

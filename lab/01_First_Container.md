@@ -17,6 +17,8 @@ docker image ls / docker images #list the images in our system
 docker run alpine ls -l #run the container from the image and run a command inside
 docker container run alpine echo "hello from alpine" 
 docker container run -it alpine /bin/sh #-it (interactive terminal) ora sei dentro al container 
+    ls
+    exit
 ```
 
 # Container Isolation
@@ -32,6 +34,8 @@ docker start C1 #startiamo il container C1 con il file creato
 docker ps #vedi i container in esecuzione
 docker exec C1 ls #lanciamo il comando all'interno del container C1 e vediamo il file
 docker exec -it C1 /bin/sh #entriamo all'interno del container
+    cat hello.txt
+    exit
 ```
 
 # Remove all

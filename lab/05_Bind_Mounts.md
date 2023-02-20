@@ -49,6 +49,8 @@ see the error
 
 # Remove all
 ```shell
+cd $HOME
+rm -rf target-nginx-ro target-nginx
 docker rm -f $(docker ps -a -q)
 docker volume rm $(docker volume ls -q)
 docker rmi $(docker images -q)

@@ -12,6 +12,7 @@ docker ps
 docker attach alpine1 #colleghiamoci al container
     ip addr show #per vedere le schede di rete e notiamo l'ip che ha ricevuto
     ping -c 2 google.com #vediamo se raggiungiamo internet
+    ctrl + p / ctrl + q
 ```
 Adesso in un altra scheda colleghiamoci al secondo container
 ```shell
@@ -19,14 +20,18 @@ docker ps
 docker attach alpine2 #colleghiamoci al container
     ip addr show #per vedere le schede di rete e notiamo l'ip che ha ricevuto
     ping -c 2 google.com #vediamo se raggiungiamo internet
+    ctrl + p / ctrl + q
 ```
 Proviamo la comunicazione tra i due container
+Notiamo che solo la risoluzione tramite ip funziona, quindi nella default bridge la risoluzione DNS non funziona a differenza della User-Bridge Network
 ```shell
 #alpine1
  ping -c 2 172.17.0.3
- ping -c 2 alpine2
+ ping -c 2 alpine2 #error
+ ctrl + p / ctrl + q
 ```
-
+chiudi tutte le sessioni con il comando exit
+ps: Se non vuoi far terminare il container con exit clicca la sequanza di tast (ctrl + p / ctrl + q) in sequenza
 # user-defined bridge networks
 ```shell
 docker network create --driver bridge alpine-net #creazione di una network bridge custom
@@ -55,37 +60,34 @@ Dividiamo lo schermo con i quatro terminali e facciamo i test
 #alpine1
 docker attach alpine1
 ping -c 2 google.com
-ping -c 2 alpine2
-ping -c 2 alpine3
-ping -c 2 alpine4
-#alpine2
-docker attach alpine2
-ping -c 2 google.com
-ping -c 2 alpine1
-ping -c 2 alpine3
-ping -c 2 alpine4
+ping -c 2 alpine2 #funziano solo con ip 
+ping -c 2 172.17.0.3
+ping -c 2 alpine3 #non funziona perche sono su reti diverse
+ping -c 2 172.19.0.2 #non funziona perche sono su reti diverse
+ping -c 2 alpine4 #non funziona perche sono su reti diverse
+ping -c 2 jolly #funziano solo con ip 
+ping -c 2 172.17.0.4 #funziona
+ping -c 2 172.19.0.4 #non funziona rete diversa
+ctrl + p / ctrl + q
 #alpine3
 docker attach alpine3
 ping -c 2 google.com
-ping -c 2 alpine1
-ping -c 2 alpine2
-ping -c 2 alpine4
-#alpine4
-docker attach alpine4
-ping -c 2 google.com
-ping -c 2 alpine1
-ping -c 2 alpine2
-ping -c 2 alpine3
+ping -c 2 alpine1 #non funziona perche su reti diverse
+ping -c 2 alpine2 #non funziona perche su reti diverse
+ping -c 2 alpine4 #funziona sia con ip che con fqdn
+ping -c 2 jolly 
+ctrl + p / ctrl + q
 ```
 Adesso vediamo il nostro container jolly che dovrebbe comunicare con tutti
 ```shell
-#alpine1
+#jolly
 docker attach jolly
 ping -c 2 google.com
-ping -c 2 alpine1
-ping -c 2 alpine2
+ping -c 2 172.17.0.2 #alpine1
+ping -c 2 172.17.0.3 #alpine2
 ping -c 2 alpine3
 ping -c 2 alpine4
+ctrl + p / ctrl + q
 ```
 # Remove all
 ```shell

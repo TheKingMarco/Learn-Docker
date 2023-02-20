@@ -2,12 +2,10 @@
 ```shell
 docker network ls
 docker network inspect host
-docker run -d --network host --name webapp1 nginx
 ip addr show
-docker attach webapp1
-    ip addr show
-http://localhost:80/ #vedi se risponde
-curl localhost:80
+curl http://localhost:80 #non risponde nulla 
+docker run -dit --network host --name webapp1 nginx
+curl http://localhost:80 #risponde il nostro server ngnix
 sudo netstat -tulpn | grep :80
 docker stop webapp1
 ```
@@ -16,17 +14,15 @@ Cosi abbiamo visto che il nostro container avendo la stessa rete dell'host che l
 Vediamo invece se lo inseriamo in una net di tipo bridge
 
 ```shell
-docker run -d --name webbapp2 nginx
-http://localhost:80/ #vedi se risponde
-curl localhost:80
+docker run -d --name webapp2 nginx
+curl http://localhost:80 #vedi se risponde
 docker stop webapp2
 ```
 Vedremo un errore
 Per esporre il servizio del container all'esterno senza utilizzare la rete dell'host possiamo publicare una posrta con il flag -p
 ```shell
 docker run -d -p 8080:80 --name webbapp3 nginx
-http://localhost:8080/ #vedi se risponde
-curl localhost:8080
+curl http://localhost:8080 #vedi se risponde
 ```
 Vedremo che tutto funziona
 

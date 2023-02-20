@@ -24,10 +24,14 @@ docker exec -it devtest sh -c "ls /app && cat /app/file.txt" #vediamo che il fil
 # Populate a volume using a container
 ```shell
 docker volume create nginx-vol
-docker run \
+docker run -d \
   --name=nginxtest \
   --mount source=nginx-vol,destination=/usr/share/nginx/html \
   nginx:latest 
+docker exec nginxtest sh -c "ls /usr/share/nginx/html"
+docker rm -f nginxtest
+docker run -it -d --name test --mount type=volume,source=nginx-vol,destination=/test nginx 
+docker exec test sh -c "ls /test"
 ```
 
 # Remove all
@@ -35,6 +39,9 @@ docker run \
 docker stop devtest
 docker container rm devtest
 docker volume rm myvol2
+
+cd $HOME
+sudo rm -fr mynginx
 
 # Remove all
 docker rm -f $(docker ps -a -q)
