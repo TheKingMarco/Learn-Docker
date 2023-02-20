@@ -15,10 +15,10 @@ docker run myfiglet figlet hello #lanciamo un container con la nostra nuova imma
 ```
 # publish to docker hub
 ```shell
-docker tag myfiglet thkingmarco/myfiglet:v1.0 #tagga imagine locale con docker account name
+docker tag myfiglet thekingmarco/myfiglet:v1.0 #tagga imagine locale con docker account name
 docker images
 docker login #accedi al tuo account docker hub username e password
-docker push thkingmarco/myfiglet:v1.0 #push dell'imagine locale su docker hub repository
+docker push thekingmarco/myfiglet:v1.0 #push dell'imagine locale su docker hub repository
 docker logout 
 ```
 # Remove all
