@@ -94,7 +94,7 @@ exit
 possiamo verificare il raggiungimento del db sulla rete attraverso un container specifico per troobleshoting di network
 ```shell
 docker run --name trouble -it --network net-todo-app nicolaka/netshoot
-    dig net-mysql #useful DNS tool , cerchiamo attraverso l'alias che abbiamo ipostato nel container
+    dig mysql #useful DNS tool , visualizziamo ip corrispondente al hostname del container
     exit
 docker rm -f trouble
 ```
@@ -106,8 +106,8 @@ MYSQL_USER - the username to use for the connection
 MYSQL_PASSWORD - the password to use for the connection
 MYSQL_DB - the database to use once connected
 ```shell
-docker exec -it mysql mysql -u root -p todos #entra in mysql
-    ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'secret';
+docker exec -it mysql mysql -u root -p #entra in mysql
+    ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'toor';
     flush privileges;
     exit
 ```
