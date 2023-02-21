@@ -116,23 +116,26 @@ start the container app
 #-w si sposta nella work directory /app
  docker run -dp 3000:3000 \
    --name todo-app \
-   -w /app \
    --network net-todo-app \
    -e MYSQL_HOST=mysql \
    -e MYSQL_USER=root \
-   -e MYSQL_PASSWORD=secret \
+   -e MYSQL_PASSWORD=toor \
    -e MYSQL_DB=todos \
    thekingmarco/todoimage:v1.0 \
 
-docker logs -f todo-app
+docker logs -f todo-app #see the log connection
 http://localhost:3000 #add few items
-docker exec -it mysql net-mysql -u root -p toor #entra nel db
-    select * from todo_items #verifica i nuovi items
+docker exec -it mysql mysql -p todos #entra nel db
+    select * from todo_items; #verifica i nuovi items
 ```
 
 
 # Remove all
 ```shell
+cd $HOME
+rm -fr getting-start
+
+docker network rm net-todo-app
 docker rm -f $(docker ps -a -q)
 docker volume rm $(docker volume ls -q)
 docker rmi $(docker images -q)
