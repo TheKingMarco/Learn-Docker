@@ -132,6 +132,7 @@ docker exec -it mysql mysql -p todos #entra nel db
 
 # Remove all
 ```shell
+
 cd $HOME
 rm -fr getting-start
 
